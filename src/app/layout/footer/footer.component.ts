@@ -53,7 +53,6 @@ import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 
       <div class="container ftr__bar">
         <span>{{ 'ftr.copyright.a' | t }} {{ year }} {{ 'ftr.copyright.b' | t }}</span>
-        <span>{{ 'ftr.madeWith' | t }} {{ ngVer }}</span>
       </div>
     </footer>
   `,
@@ -132,5 +131,4 @@ import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 })
 export class FooterComponent {
   readonly year = new Date().getFullYear();
-  readonly ngVer = '18';
 }
