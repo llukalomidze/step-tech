@@ -198,7 +198,7 @@ input, textarea, select { min-width: 0; }
 }
 
 /* Marquee */
-.marquee { display: flex; gap: 3rem; white-space: nowrap; animation: marqueeScroll 50s linear infinite; }
+.marquee { display: flex; gap: 3rem; white-space: nowrap; animation: marqueeScroll 20s linear infinite; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
