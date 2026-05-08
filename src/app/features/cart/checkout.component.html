@@ -1,0 +1,116 @@
+<section class="checkout container">
+  <a routerLink="/cart" class="back">{{ 'checkout.back' | t }}</a>
+  <h1>{{ 'checkout.title' | t }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="checkout__layout" novalidate>
+    <div class="checkout__main">
+      <fieldset class="card">
+        <legend>{{ 'checkout.contactShip' | t }}</legend>
+
+        <div class="row two">
+          <label class="field">
+            <span>{{ 'checkout.firstName' | t }}</span>
+            <input formControlName="firstName" autocomplete="given-name" />
+            @if (form.controls.firstName.touched && form.controls.firstName.invalid) {
+              <small class="err">Please enter your first name.</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>{{ 'checkout.lastName' | t }}</span>
+            <input formControlName="lastName" autocomplete="family-name" />
+            @if (form.controls.lastName.touched && form.controls.lastName.invalid) {
+              <small class="err">Please enter your last name.</small>
+            }
+          </label>
+        </div>
+
+        <label class="field">
+          <span>{{ 'checkout.email' | t }}</span>
+          <input formControlName="email" type="email" autocomplete="email" />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <small class="err">Enter a valid email address.</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>{{ 'checkout.phone' | t }}</span>
+          <input formControlName="phone" type="tel" placeholder="+995 555 12 34 56" autocomplete="tel" />
+          @if (form.controls.phone.touched && form.controls.phone.invalid) {
+            <small class="err">Phone should be 7–15 digits, optionally starting with +.</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>{{ 'checkout.shippingAddress' | t }}</span>
+          <textarea formControlName="address" rows="3" autocomplete="street-address"></textarea>
+          @if (form.controls.address.touched && form.controls.address.invalid) {
+            <small class="err">Please enter a complete shipping address.</small>
+          }
+        </label>
+      </fieldset>
+
+      <fieldset class="card">
+        <legend>{{ 'checkout.payment' | t }}</legend>
+
+        <div class="pay-options">
+          <label class="pay-option" [class.is-on]="form.controls.paymentMethod.value === 'card'">
+            <input type="radio" formControlName="paymentMethod" value="card" />
+            <span><strong>{{ 'checkout.cardOption' | t }}</strong><small>{{ 'checkout.cardSub' | t }}</small></span>
+          </label>
+          <label class="pay-option" [class.is-on]="form.controls.paymentMethod.value === 'cod'">
+            <input type="radio" formControlName="paymentMethod" value="cod" />
+            <span><strong>{{ 'checkout.codOption' | t }}</strong><small>{{ 'checkout.codSub' | t }}</small></span>
+          </label>
+        </div>
+
+        @if (cardRequired()) {
+          <div class="card-fields">
+            <label class="field">
+              <span>{{ 'checkout.cardNumber' | t }}</span>
+              <input formControlName="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="4242 4242 4242 4242" />
+              @if (form.controls.cardNumber.touched && form.controls.cardNumber.invalid) {
+                <small class="err">Card number fails the Luhn check.</small>
+              }
+            </label>
+            <div class="row two">
+              <label class="field">
+                <span>{{ 'checkout.expiry' | t }}</span>
+                <input formControlName="cardExpiry" placeholder="08/29" autocomplete="cc-exp" />
+                @if (form.controls.cardExpiry.touched && form.controls.cardExpiry.invalid) {
+                  <small class="err">Use MM/YY format.</small>
+                }
+              </label>
+              <label class="field">
+                <span>{{ 'checkout.cvc' | t }}</span>
+                <input formControlName="cardCvc" inputmode="numeric" autocomplete="cc-csc" placeholder="123" />
+                @if (form.controls.cardCvc.touched && form.controls.cardCvc.invalid) {
+                  <small class="err">3 or 4 digits.</small>
+                }
+              </label>
+            </div>
+          </div>
+        }
+      </fieldset>
+    </div>
+
+    <aside class="summary card">
+      <h2>{{ 'checkout.summary' | t }}</h2>
+      <ul role="list">
+        @for (it of cartRef.items(); track it.productId) {
+          <li>
+            <span class="summary__name">{{ it.name }} × {{ it.quantity }}</span>
+            <span>{{ (it.price * it.quantity) | gel }}</span>
+          </li>
+        }
+      </ul>
+      <div class="summary__row"><span>{{ 'cart.subtotal' | t }}</span><strong>{{ cartRef.subtotal() | gel }}</strong></div>
+      <div class="summary__row"><span>{{ 'cart.shipping' | t }}</span><strong>{{ cartRef.shipping() === 0 ? ('cart.free' | t) : (cartRef.shipping() | gel) }}</strong></div>
+      <div class="summary__row summary__row--total"><span>{{ 'cart.total' | t }}</span><strong>{{ cartRef.total() | gel }}</strong></div>
+      <app-button type="submit" size="lg" [loading]="submitting()" [disabled]="cartRef.isEmpty()">
+        {{ 'checkout.placeOrder' | t }}
+      </app-button>
+      <p class="summary__note">{{ 'checkout.terms' | t }}</p>
+    </aside>
+  </form>
+</section>

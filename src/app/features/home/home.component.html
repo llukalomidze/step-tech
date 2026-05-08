@@ -1,0 +1,57 @@
+<section class="hero">
+  <div class="container hero__inner">
+    <header class="hero__masthead" aria-label="Step Tech">
+      <img src="assets/logo.svg" alt="Step Tech" class="hero__mark" />
+      <span class="hero__rule" aria-hidden="true"></span>
+      <p class="hero__masthead-meta">{{ 'home.eyebrow' | t }}</p>
+    </header>
+    <h1 class="hero__title">{{ 'home.heroTitle.a' | t }}<em>{{ 'home.heroTitle.em' | t }}</em>{{ 'home.heroTitle.b' | t }}</h1>
+    <p class="hero__lede">{{ 'home.heroLede' | t }}</p>
+    <div class="hero__cta">
+      <a routerLink="/shop"><app-button variant="accent" size="lg">{{ 'home.shopBtn' | t }}</app-button></a>
+      <a routerLink="/about"><app-button variant="ghost" size="lg">{{ 'home.aboutBtn' | t }}</app-button></a>
+    </div>
+  </div>
+</section>
+
+<section class="band" appReveal="fade" aria-hidden="true">
+  <div class="band__inner">
+    <div class="marquee">
+      @for (_ of [1,2,3]; track $index) {
+        <span><em>{{ 'home.band.curated' | t }}</em></span><span>·</span>
+        <span>{{ 'home.band.honest' | t }}</span><span>·</span>
+        <span><em>{{ 'home.band.fair' | t }}</em> {{ 'home.band.pricing' | t }}</span><span>·</span>
+        <span>{{ 'home.band.local' | t }}</span><span>·</span>
+        <span>{{ 'home.band.shipping' | t }}</span><span>·</span>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <header class="section__head" appReveal="up">
+    <div>
+      <span class="section__num">{{ 'home.s1.num' | t }}</span>
+      <h2>{{ 'home.s1.title.a' | t }}<em>{{ 'home.s1.title.em' | t }}</em>{{ 'home.s1.title.b' | t }}</h2>
+    </div>
+    <a routerLink="/shop" [queryParams]="{ sort: 'rating' }" class="section__more">{{ 'common.viewAll' | t }}<span>→</span></a>
+  </header>
+
+  @if (loading()) {
+    <div class="grid"><app-skeleton-card [count]="8" /></div>
+  } @else {
+    <div class="grid" appRevealStagger>
+      @for (p of featured(); track p.id) {
+        <app-product-card [product]="p" (addToCart)="onAddToCart($event)" />
+      }
+    </div>
+  }
+</section>
+
+<section class="section container" appReveal="zoom">
+  <div class="cta">
+    <p class="eyebrow eyebrow--inverse">{{ 'home.cta.eyebrow' | t }}</p>
+    <h2 class="cta__title">{{ 'home.cta.title.a' | t }}<em>{{ 'home.cta.title.em' | t }}</em>{{ 'home.cta.title.b' | t }}</h2>
+    <a routerLink="/shop"><app-button variant="accent" size="lg">{{ 'home.cta.btn' | t }}</app-button></a>
+  </div>
+</section>

@@ -1,0 +1,214 @@
+/* =============================================================
+   STEP TECH — editorial light theme, May 2026
+   ============================================================= */
+
+/* MSBlock — currently scoped to ALL glyphs (Latin + Georgian) so we can
+   evaluate it as the primary face. To restrict back to Georgian only,
+   re-add: `unicode-range: U+10A0-10FF, U+1C90-1CBF, U+2D00-2D2F;` */
+@font-face {
+  font-family: 'MSBlock';
+  src: url('/assets/fonts/MSBlock-4295653137.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Surfaces (OKLCH, all tinted toward cool blue-grey, h≈250) */
+  --color-bg:        oklch(0.97  0.004 250);
+  --color-surface:   oklch(0.985 0.003 250);
+  --color-surface-2: oklch(0.935 0.006 250);
+  --color-elevated:  oklch(0.98  0.004 250);
+
+  /* Text */
+  --color-text:        oklch(0.18 0.020 260);
+  --color-text-soft:   oklch(0.30 0.018 260);
+  --color-text-muted:  oklch(0.50 0.012 260);
+  --color-text-dim:    oklch(0.68 0.010 260);
+
+  /* Borders */
+  --color-border:        oklch(0.88 0.006 250);
+  --color-border-strong: oklch(0.78 0.008 250);
+
+  /* The single cool accent — muted slate blue */
+  --color-accent:        oklch(0.45 0.11 250);
+  --color-accent-strong: oklch(0.35 0.11 250);
+  --color-accent-soft:   oklch(0.92 0.025 250);
+  --color-accent-tint:   oklch(0.96 0.012 250);
+
+  /* Status */
+  --color-success: oklch(0.55 0.10 145);
+  --color-danger:  oklch(0.55 0.16 25);
+  --color-rating:  oklch(0.78 0.12 70);
+
+  /* Type — MSBlock first across all roles so it covers Latin + Georgian. */
+  --font-base: 'MSBlock', 'Inter Tight', system-ui, -apple-system, sans-serif;
+  --font-display: 'MSBlock', 'Fraunces', Georgia, serif;
+  --font-mono: 'MSBlock', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+
+  /* Shadows — cast off warm ink, never pure black */
+  --shadow-sm: 0 2px 6px -2px oklch(0.20 0.02 270 / 0.08);
+  --shadow-md: 0 18px 36px -12px oklch(0.20 0.02 270 / 0.14);
+  --shadow-lg: 0 30px 60px -16px oklch(0.20 0.02 270 / 0.20);
+
+  /* Easings */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-soft:      cubic-bezier(0.4, 0, 0.2, 1);
+
+  color-scheme: light;
+}
+
+/* Reset / base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; max-width: 100%; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { overflow-x: hidden; position: relative; }
+
+/* Mobile overflow guards:
+   - grid/flex children need min-width:0 so long content can't force the
+     track wider than the viewport.
+   - long product names / model numbers can break inside a card. */
+.grid > *, .cats > *, .cart__items > *, .lines > * { min-width: 0; min-height: 0; }
+h1, h2, h3, p, a, span { overflow-wrap: break-word; }
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  font-feature-settings: 'cv11', 'ss01', 'ss03', 'cv05';
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, svg { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; }
+a { color: var(--color-text); }
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 0;
+}
+h1 { font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 1; }
+
+em, .italic, .serif-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+}
+
+/* Container — respects iOS safe-area on notched devices in landscape */
+.container {
+  width: 100%;
+  max-width: 1300px;
+  margin-inline: auto;
+  padding-left:  max(env(safe-area-inset-left), clamp(1.5rem, 5vw, 2rem));
+  padding-right: max(env(safe-area-inset-right), clamp(1.5rem, 5vw, 2rem));
+}
+
+input, textarea, select { min-width: 0; }
+
+/* Skip link */
+.skip-link { position: absolute; left: -9999px; top: 0; }
+.skip-link:focus { left: .5rem; top: .5rem; z-index: 1000; background: var(--color-text); color: var(--color-bg); padding: .5rem .8rem; border-radius: var(--radius-md); }
+
+/* Focus ring — soft accent halo, never the saturated accent at full strength */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Lazy image fade-in */
+.lazy-img { opacity: 0; transform: scale(1.04); transition: opacity .7s var(--ease-out-expo), transform .9s var(--ease-out-expo); }
+.lazy-img.is-loaded { opacity: 1; transform: scale(1); }
+
+/* Selection */
+::selection { background: var(--color-accent-soft); color: var(--color-text); }
+
+/* Scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--color-border-strong) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 999px; }
+
+/* ================== Scroll-reveal directive states ================== */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity .8s var(--ease-out-expo),
+    transform .9s var(--ease-out-expo),
+    filter .8s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+[data-reveal="up"]    { transform: translate3d(0, 32px, 0); }
+[data-reveal="fade"]  { transform: none; }
+[data-reveal="left"]  { transform: translate3d(-40px, 0, 0); }
+[data-reveal="right"] { transform: translate3d(40px, 0, 0); }
+[data-reveal="zoom"]  { transform: scale(0.96); filter: blur(4px); }
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Stagger children when parent reveals */
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity .7s var(--ease-out-expo), transform .8s var(--ease-out-expo);
+}
+[data-reveal-stagger].is-revealed > * { opacity: 1; transform: none; }
+[data-reveal-stagger].is-revealed > *:nth-child(1) { transition-delay: 0s; }
+[data-reveal-stagger].is-revealed > *:nth-child(2) { transition-delay: 60ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(3) { transition-delay: 120ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(4) { transition-delay: 180ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(5) { transition-delay: 240ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(6) { transition-delay: 300ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(7) { transition-delay: 360ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(8) { transition-delay: 420ms; }
+[data-reveal-stagger].is-revealed > *:nth-child(n+9) { transition-delay: 480ms; }
+
+/* ================== Animations ================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Marquee */
+.marquee { display: flex; gap: 3rem; white-space: nowrap; animation: marqueeScroll 50s linear infinite; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  [data-reveal] { opacity: 1; transform: none !important; filter: none !important; }
+  [data-reveal-stagger] > * { opacity: 1; transform: none !important; }
+}
+
+/* Print niceties */
+@media print {
+  body { background: #fff; color: #000; }
+  .hdr, .ftr, .toasts { display: none !important; }
+}

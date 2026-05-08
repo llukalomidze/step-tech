@@ -1,0 +1,102 @@
+<section class="shop">
+  <div class="container shop__head">
+    <h1>{{ 'shop.title.a' | t }}<em>{{ 'shop.title.em' | t }}</em>{{ 'shop.title.b' | t }}</h1>
+    <p class="shop__lede">{{ result()?.totalCount ?? 0 }} {{ 'shop.lede.products' | t }} · {{ 'shop.lede.tail' | t }}</p>
+  </div>
+
+  <div class="container shop__layout">
+    <aside class="shop__filters" aria-label="Filters">
+      <div class="filter-block">
+        <label class="filter-block__label" for="search">{{ 'shop.searchLabel' | t }}</label>
+        <input id="search" type="search" class="input"
+               [formControl]="searchCtrl"
+               [placeholder]="'shop.searchPlaceholder' | t" />
+      </div>
+
+      <div class="filter-block">
+        <span class="filter-block__label">{{ 'shop.category' | t }}</span>
+        <div class="chip-group">
+          <button class="chip" type="button"
+                  [class.is-on]="filters().categoryId === null"
+                  (click)="patch({ categoryId: null, page: 1 })">{{ 'shop.all' | t }}</button>
+          @for (c of categoryList(); track c.id) {
+            <button class="chip" type="button"
+                    [class.is-on]="filters().categoryId === c.id"
+                    (click)="patch({ categoryId: c.id, page: 1 })">{{ c.name }}</button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <span class="filter-block__label">{{ 'shop.priceRange' | t }}</span>
+        <div class="row">
+          <input type="number" class="input" [placeholder]="'shop.min' | t" min="0" [formControl]="minPriceCtrl" />
+          <input type="number" class="input" [placeholder]="'shop.max' | t" min="0" [formControl]="maxPriceCtrl" />
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <span class="filter-block__label">{{ 'shop.minRating' | t }}</span>
+        <div class="chip-group">
+          @for (r of [null, 3, 4, 5]; track $index) {
+            <button class="chip" type="button"
+                    [class.is-on]="filters().minRating === r"
+                    (click)="patch({ minRating: r, page: 1 })">
+              {{ r === null ? ('shop.any' | t) : r + '★+' }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="filter-block">
+        <label class="check">
+          <input type="checkbox"
+                 [checked]="filters().inStock === true"
+                 (change)="patch({ inStock: filters().inStock ? null : true, page: 1 })" />
+          {{ 'shop.inStockOnly' | t }}
+        </label>
+      </div>
+
+      <app-button variant="ghost" (clicked)="reset()">{{ 'shop.resetFilters' | t }}</app-button>
+    </aside>
+
+    <section class="shop__main">
+      <div class="shop__bar">
+        <span class="shop__count">
+          @if (loading()) { {{ 'shop.loading' | t }} }
+          @else { {{ result()?.totalCount ?? 0 }} {{ 'shop.results' | t }} }
+        </span>
+        <label class="sort">
+          {{ 'shop.sort' | t }}
+          <select [ngModel]="sortKey()" (ngModelChange)="applySort($event)">
+            @for (o of sortOptions; track o.key) {
+              <option [value]="o.key">{{ o.labelKey | t }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      @if (loading()) {
+        <div class="grid"><app-skeleton-card [count]="filters().take" /></div>
+      } @else if ((result()?.items?.length ?? 0) === 0) {
+        <app-empty-state [icon]="'🔎'" [title]="'shop.empty.title' | t" [description]="'shop.empty.desc' | t">
+          <app-button variant="secondary" (clicked)="reset()">{{ 'shop.empty.btn' | t }}</app-button>
+        </app-empty-state>
+      } @else {
+        <div class="grid" appRevealStagger>
+          @for (p of result()!.items; track p.id) {
+            <app-product-card [product]="p" (addToCart)="onAddToCart($event)" />
+          }
+        </div>
+
+        @if (result()!.totalPages > 1) {
+          <nav class="pager" aria-label="Pagination">
+            <app-button variant="secondary" [disabled]="filters().page <= 1" (clicked)="changePage(-1)">{{ 'shop.prev' | t }}</app-button>
+            <span class="pager__info">{{ 'shop.page' | t }} {{ result()!.currentPage }} {{ 'shop.pageOf' | t }} {{ result()!.totalPages }}</span>
+            <app-button variant="secondary" [disabled]="!result()!.hasMore" (clicked)="changePage(1)">{{ 'shop.next' | t }}</app-button>
+          </nav>
+        }
+      }
+    </section>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+<section class="cart container">
+  <h1 class="cart__title">{{ 'cart.title.a' | t }}<em>{{ 'cart.title.em' | t }}</em>{{ 'cart.title.b' | t }}</h1>
+
+  @if (cart.isEmpty()) {
+    <app-empty-state icon="🛒" [title]="'cart.empty.title' | t" [description]="'cart.empty.desc' | t">
+      <a routerLink="/shop"><app-button>{{ 'cart.empty.btn' | t }}</app-button></a>
+    </app-empty-state>
+  } @else {
+    <div class="cart__layout">
+      <ul class="cart__items" role="list">
+        @for (item of cart.items(); track trackById($index, item)) {
+          <li class="line">
+            <a [routerLink]="['/shop', item.productId]" class="line__media">
+              <img [appLazyImage]="item.imageUrl" [alt]="item.name" />
+            </a>
+            <div class="line__body">
+              <p class="line__brand">{{ item.brand }}</p>
+              <a [routerLink]="['/shop', item.productId]" class="line__name">{{ item.name }}</a>
+              <p class="line__unit">{{ item.price | gel }} {{ 'cart.each' | t }}</p>
+            </div>
+            <div class="line__actions">
+              <app-quantity-input
+                [value]="item.quantity"
+                [min]="1"
+                [max]="item.stock || 99"
+                [label]="item.name"
+                (valueChange)="setQuantity(item.productId, $event)" />
+              <p class="line__total">{{ (item.price * item.quantity) | gel }}</p>
+              <button class="line__remove" type="button" (click)="remove(item)" aria-label="Remove item">✕</button>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <aside class="summary" aria-label="Order summary">
+        <h2>{{ 'cart.summary' | t }}</h2>
+        <div class="summary__row"><span>{{ 'cart.items' | t }}</span><strong>{{ cart.count() }}</strong></div>
+        <div class="summary__row"><span>{{ 'cart.subtotal' | t }}</span><strong>{{ cart.subtotal() | gel }}</strong></div>
+        <div class="summary__row"><span>{{ 'cart.shipping' | t }}</span><strong>{{ cart.shipping() === 0 ? ('cart.free' | t) : (cart.shipping() | gel) }}</strong></div>
+        <div class="summary__row summary__row--total"><span>{{ 'cart.total' | t }}</span><strong>{{ cart.total() | gel }}</strong></div>
+
+        @if (!auth.isAuthenticated()) {
+          <p class="summary__hint">
+            <span class="summary__hint-pill">{{ 'cart.accountRequired' | t }}</span>
+            {{ 'cart.accountRequiredMsg' | t }}
+          </p>
+        }
+
+        <app-button size="lg" (clicked)="goCheckout()">
+          {{ auth.isAuthenticated() ? ('cart.checkout' | t) : ('cart.signInCheckout' | t) }}
+        </app-button>
+        <a routerLink="/shop" class="summary__continue">{{ 'cart.continueShopping' | t }}</a>
+      </aside>
+    </div>
+  }
+</section>

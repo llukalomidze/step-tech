@@ -1,0 +1,111 @@
+@if (loading()) {
+  <div class="container loading-state"><app-loader label="Loading product" /></div>
+}
+
+@if (product(); as p) {
+  <article class="pdp container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a> <span>›</span>
+      <a routerLink="/shop">Shop</a> <span>›</span>
+      @if (p.category) {
+        <a [routerLink]="['/shop']" [queryParams]="{ category: p.category.id }">{{ p.category.name }}</a> <span>›</span>
+      }
+      <span class="breadcrumbs__current">{{ p.name }}</span>
+    </nav>
+
+    <div class="pdp__grid">
+      <section class="pdp__media">
+        <div class="pdp__main-image">
+          <img [appLazyImage]="activeImage()" [alt]="p.name" />
+          @if (p.stock <= 0) { <span class="pdp__out-tag">Out of stock</span> }
+        </div>
+        @if (gallery().length > 1) {
+          <ul class="pdp__thumbs" role="list">
+            @for (img of gallery(); track img) {
+              <li>
+                <button type="button"
+                        class="pdp__thumb"
+                        [class.is-on]="activeImage() === img"
+                        (click)="setImage(img)"
+                        [attr.aria-label]="'Show image ' + ($index + 1)">
+                  <img [src]="img" alt="" />
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="pdp__info">
+        <p class="pdp__brand">{{ p.brand }} · {{ p.model }}</p>
+        <h1 class="pdp__title">{{ p.name }}</h1>
+        <div class="pdp__rating">
+          <app-rating-stars [value]="p.rating" />
+          <span>{{ p.rating | number:'1.1-1' }} · {{ reviewList().length }} reviews</span>
+        </div>
+        <p class="pdp__price">{{ p.price | gel }}</p>
+        <p class="pdp__desc">{{ p.description || 'No description provided for this product.' }}</p>
+
+        <div class="pdp__buy">
+          <app-quantity-input
+            [value]="quantity()"
+            [min]="1"
+            [max]="p.stock || 99"
+            label="quantity"
+            (valueChange)="setQuantity($event)" />
+
+          <app-button size="lg" [disabled]="p.stock <= 0" (clicked)="addToCart()">
+            {{ p.stock > 0 ? 'Add to cart' : 'Sold out' }}
+          </app-button>
+        </div>
+
+        <ul class="pdp__perks" aria-label="Perks">
+          <li>✓ Free shipping over ₾200</li>
+          <li>✓ 14-day returns</li>
+          <li>✓ 1-year warranty</li>
+        </ul>
+
+        @if (specsList().length > 0) {
+          <details class="pdp__specs" open>
+            <summary>Specifications</summary>
+            <dl>
+              @for (s of specsList(); track s.k) {
+                <div><dt>{{ s.k }}</dt><dd>{{ s.v }}</dd></div>
+              }
+            </dl>
+          </details>
+        }
+      </section>
+    </div>
+
+    @if (reviewList().length > 0) {
+      <section class="pdp__reviews" appReveal="up">
+        <h2>What people say.</h2>
+        <ul role="list">
+          @for (r of reviewList(); track r.id) {
+            <li class="review">
+              <div class="review__head">
+                <strong>{{ r.user.firstName || 'Anonymous' }}</strong>
+                <span class="review__date">{{ r.createdAt | date:'mediumDate' }}</span>
+              </div>
+              <app-rating-stars [value]="r.rating" />
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    @if (related().length > 0) {
+      <section class="pdp__related" appReveal="up">
+        <h2>You may also like.</h2>
+        <div class="grid" appRevealStagger>
+          @for (rp of related(); track rp.id) {
+            <app-product-card [product]="rp" (addToCart)="onRelatedAdd($event)" />
+          }
+        </div>
+      </section>
+    }
+  </article>
+} @else if (!loading()) {
+  <div class="container loading-state">Product not found.</div>
+}
