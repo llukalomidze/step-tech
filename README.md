@@ -1,6 +1,6 @@
 # STEP TECH — Modern Angular 18 e-commerce
 
-A production-quality Angular 18 standalone-component e-commerce demo, built against the public **STEP TECH** API at `https://shopapi.stepacademy.ge`. Final-year university project.
+A production-quality Angular 18 standalone-component e-commerce demo, built against the public **STEP TECH** API at `https://shopapi.stepacademy.ge`. Final-project for IT academy STEP
 
 ## Stack
 
