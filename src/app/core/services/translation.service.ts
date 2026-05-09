@@ -21,6 +21,10 @@ const en: Dict = {
 
   /* Common */
   'common.viewAll': 'View all',
+  'common.email': 'Email',
+  'common.password': 'Password',
+  'common.firstName': 'First name',
+  'common.lastName': 'Last name',
 
   /* Home */
   'home.eyebrow': 'New · Spring 2026',
@@ -307,6 +311,10 @@ const ka: Dict = {
 
   /* Common */
   'common.viewAll': 'ყველას ნახვა',
+  'common.email': 'ელ-ფოსტა',
+  'common.password': 'პაროლი',
+  'common.firstName': 'სახელი',
+  'common.lastName': 'გვარი',
 
   /* Home */
   'home.eyebrow': 'ახალი · 2026 გაზაფხული',
