@@ -59,30 +59,24 @@ export class CheckoutComponent implements OnInit {
         c.cardNumber.addValidators([Validators.required, luhnValidator()]);
         c.cardExpiry.addValidators([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]);
         c.cardCvc.addValidators([Validators.required, Validators.pattern(/^\d{3,4}$/)]);
-      try {
-        const payload = {
-          customerEmail: order.contact.email,
-          customerName: `${order.contact.firstName} ${order.contact.lastName}`,
-          orderId: order.id,
-          orderDate: order.placedAt,
-          subtotal: String(order.subtotal),
-          shipping: String(order.shipping),
-          totalAmount: String(order.total),
-          currency: 'GEL',
-          paymentMethod: order.paymentMethod,
-          isGuest: order.isGuest,
-          items: order.items.map((i) => ({ product: i.name, productId: i.productId, quantity: i.quantity, price: String(i.price) })),
-          orderConfirmationUrl: `${location.origin}/order-confirmed/${order.id}`
-        };
-
-        void fetch(environment.n8nWebhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        }).catch(() => { /* ignore webhook errors */ });
-      } catch {
-        /* ignore */
+      } else {
+        c.cardNumber.clearValidators();
+        c.cardExpiry.clearValidators();
+        c.cardCvc.clearValidators();
       }
+      c.cardNumber.updateValueAndValidity();
+      c.cardExpiry.updateValueAndValidity();
+      c.cardCvc.updateValueAndValidity();
+    });
+  }
+
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.toast.error("Please fix the highlighted fields.");
+      return;
+    }
+    if (this.cart.isEmpty()) {
       this.toast.error("Your bag is empty.");
       return;
     }
@@ -128,7 +122,7 @@ export class CheckoutComponent implements OnInit {
       isGuest: false,
     };
     this.orders.persistLocal(order);
-    // Send order details to n8n webhook (frontend fallback).
+    // Frontend fallback: send order details to n8n webhook (non-blocking).
     try {
       void fetch(environment.n8nWebhookUrl, {
         method: "POST",
