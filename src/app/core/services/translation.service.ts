@@ -18,6 +18,7 @@ const en: Dict = {
   'header.bag': 'Cart',
   'header.signIn': 'Sign in',
   'header.signOut': 'Sign out',
+  'header.profile': 'Profile',
 
   /* Common */
   'common.viewAll': 'View all',
@@ -196,6 +197,22 @@ const en: Dict = {
   'register.errLast': 'Please enter your last name.',
   'register.errMail': 'Enter a valid email.',
 
+  /* Profile */
+  'profile.title.a': 'Your ',
+  'profile.title.em': 'profile',
+  'profile.title.b': '.',
+  'profile.lede': 'Update your name or change your password.',
+  'profile.details.title': 'Account details',
+  'profile.details.save': 'Save changes',
+  'profile.password.title': 'Change password',
+  'profile.password.hint': "You'll need to sign in again afterwards.",
+  'profile.password.current': 'Current password',
+  'profile.password.new': 'New password',
+  'profile.password.confirm': 'Confirm new password',
+  'profile.password.save': 'Update password',
+  'profile.password.errCurrent': 'Enter your current password.',
+  'profile.password.errMatch': "Passwords don't match.",
+
   /* Verify email */
   'verify.eyebrow': 'Step 2 of 2',
   'verify.title.a': 'Check your ',
@@ -317,6 +334,7 @@ const ka: Dict = {
   'header.bag': 'კალათა',  /* "კალათა" already means "cart/basket" — same word in Georgian */
   'header.signIn': 'შესვლა',
   'header.signOut': 'გასვლა',
+  'header.profile': 'პროფილი',
 
   /* Common */
   'common.viewAll': 'ყველას ნახვა',
@@ -494,6 +512,22 @@ const ka: Dict = {
   'register.errFirst': 'შეიყვანე სახელი.',
   'register.errLast': 'შეიყვანე გვარი.',
   'register.errMail': 'შეიყვანე სწორი ელ-ფოსტა.',
+
+  /* Profile */
+  'profile.title.a': 'შენი ',
+  'profile.title.em': 'პროფილი',
+  'profile.title.b': '.',
+  'profile.lede': 'შეცვალე სახელი ან პაროლი.',
+  'profile.details.title': 'ანგარიშის დეტალები',
+  'profile.details.save': 'შენახვა',
+  'profile.password.title': 'პაროლის შეცვლა',
+  'profile.password.hint': 'შემდეგ ხელახლა უნდა შეხვიდე.',
+  'profile.password.current': 'მიმდინარე პაროლი',
+  'profile.password.new': 'ახალი პაროლი',
+  'profile.password.confirm': 'გაიმეორე ახალი პაროლი',
+  'profile.password.save': 'პაროლის განახლება',
+  'profile.password.errCurrent': 'შეიყვანე მიმდინარე პაროლი.',
+  'profile.password.errMatch': 'პაროლები არ ემთხვევა.',
 
   /* Verify email */
   'verify.eyebrow': 'ნაბიჯი 2 / 2',

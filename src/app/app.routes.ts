@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'login', loadComponent: () => import('./features/auth/login.component').then((m) => m.LoginComponent), title: 'Sign in · STEP TECH' },
       { path: 'register', loadComponent: () => import('./features/auth/register.component').then((m) => m.RegisterComponent), title: 'Create account · STEP TECH' },
       { path: 'verify-email', loadComponent: () => import('./features/auth/verify-email.component').then((m) => m.VerifyEmailComponent), title: 'Verify email · STEP TECH' },
+      { path: 'profile', canActivate: [authGuard], loadComponent: () => import('./features/profile/profile.component').then((m) => m.ProfileComponent), title: 'Profile · STEP TECH' },
       { path: 'about', loadComponent: () => import('./features/about/about.component').then((m) => m.AboutComponent), title: 'About · STEP TECH' },
       { path: 'contact', loadComponent: () => import('./features/contact/contact.component').then((m) => m.ContactComponent), title: 'Contact · STEP TECH' },
       { path: '404', loadComponent: () => import('./features/not-found/not-found.component').then((m) => m.NotFoundComponent), title: 'Not found · STEP TECH' },

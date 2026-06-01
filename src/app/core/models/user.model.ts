@@ -23,3 +23,8 @@ export interface EditProfileRequest {
   pictureUrl?: string | null;
   dateOfBirth?: string | null;
 }
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
