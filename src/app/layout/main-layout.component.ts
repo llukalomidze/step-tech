@@ -4,13 +4,14 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ToastContainerComponent } from '../shared/components/toast-container.component';
 import { DotGridComponent } from '../shared/components/dot-grid.component';
+import { ChatWidgetComponent } from '../shared/components/chat-widget.component';
 import { LoadingService } from '../core/services/loading.service';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, ToastContainerComponent, DotGridComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, ToastContainerComponent, DotGridComponent, ChatWidgetComponent],
   template: `
     <app-dot-grid />
     <div class="layout">
@@ -20,6 +21,7 @@ import { LoadingService } from '../core/services/loading.service';
       <app-footer />
     </div>
     <app-toast-container />
+    <app-chat-widget />
   `,
   styles: [`
     :host { display: block; min-height: 100vh; }

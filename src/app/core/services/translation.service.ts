@@ -293,7 +293,16 @@ const en: Dict = {
   'ftr.madeWith': 'Made with Angular',
   'ftr.manifesto.a': 'Tech that ',
   'ftr.manifesto.em': 'moves',
-  'ftr.manifesto.b': ' you forward. Curated, honest, a little bit obsessive.'
+  'ftr.manifesto.b': ' you forward. Curated, honest, a little bit obsessive.',
+
+  /* Chat assistant */
+  'chat.title': 'Tech Shop Assistant',
+  'chat.open': 'Open chat',
+  'chat.close': 'Close chat',
+  'chat.send': 'Send message',
+  'chat.placeholder': 'Ask about products, orders, or tech…',
+  'chat.welcome.title': 'Hi! How can I help?',
+  'chat.welcome.body': 'Ask me about products, specs, recommendations, or your order.',
 };
 
 const ka: Dict = {
@@ -583,7 +592,16 @@ const ka: Dict = {
   'ftr.madeWith': 'შექმნილია Angular-ით',
   'ftr.manifesto.a': 'ტექნიკა, რომელიც ',
   'ftr.manifesto.em': 'წინ',
-  'ftr.manifesto.b': ' გიყვანს. შერჩეული, გულახდილი, ცოტა ობსესიური.'
+  'ftr.manifesto.b': ' გიყვანს. შერჩეული, გულახდილი, ცოტა ობსესიური.',
+
+  /* Chat assistant */
+  'chat.title': 'ტექ-მაღაზიის ასისტენტი',
+  'chat.open': 'ჩატის გახსნა',
+  'chat.close': 'ჩატის დახურვა',
+  'chat.send': 'შეტყობინების გაგზავნა',
+  'chat.placeholder': 'მკითხეთ პროდუქტებზე, შეკვეთებზე ან ტექნიკაზე…',
+  'chat.welcome.title': 'გამარჯობა! როგორ დაგეხმაროთ?',
+  'chat.welcome.body': 'მკითხეთ პროდუქტებზე, მახასიათებლებზე, რეკომენდაციებზე ან თქვენს შეკვეთაზე.',
 };
 
 const DICTS: Record<Lang, Dict> = { en, ka };
